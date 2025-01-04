@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://letsgta.net
+
+# Sitemaps
+Sitemap: https://letsgta.net/sitemap.xml
