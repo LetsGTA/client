@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Let's GTA",
@@ -29,7 +30,11 @@ const RootLayout = ({
         />
       </head>
 
-      <body className={`antialiased ${pretendard.className}`}>{children}</body>
+      <body className={`antialiased ${pretendard.className}`}>
+        {children}
+        {/* vercel SpeedInsights */}
+        <SpeedInsights />
+      </body>
     </html>
   );
 };
