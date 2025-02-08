@@ -22,8 +22,53 @@ export function LoginPage() {
   };
 
   const handleOAuthLogin = (provider: string) => {
-    // 여기에 OAuth 로그인 로직을 구현하세요
-    console.log(`${provider} login attempted`);
+    let authUrl = '';
+
+    switch (provider) {
+      case 'Google':
+        authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams(
+          {
+            client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+            redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,
+            response_type: 'code',
+            scope: 'openid email profile',
+          },
+        ).toString()}`;
+        break;
+
+      case 'Kakao':
+        authUrl = `https://kauth.kakao.com/oauth/authorize?${new URLSearchParams(
+          {
+            client_id: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!,
+            redirect_uri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI!,
+            response_type: 'code',
+          },
+        ).toString()}`;
+        break;
+
+      case 'Epic Games':
+        // Epic Games OAuth URL 구성
+        break;
+
+      case 'Steam':
+        // Steam OAuth URL 구성
+        break;
+
+      case 'Xbox':
+        // Xbox OAuth URL 구성
+        break;
+
+      case 'PlayStation':
+        // PlayStation OAuth URL 구성
+        break;
+
+      default:
+        console.error('Unknown provider:', provider);
+        return;
+    }
+
+    // 해당 OAuth 인증 URL로 리디렉션
+    window.location.href = authUrl;
   };
 
   return (
