@@ -27,11 +27,17 @@ export const getGoogleToken = async (code: string) => {
     );
 
     return response.data; // { access_token, id_token, refresh_token 등 }
-  } catch (error: any) {
-    console.error(
-      'Error fetching Google token:',
-      error.response?.data || error.message,
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Error fetching Google token:',
+        error.response?.data || error.message,
+      );
+    } else if (error instanceof Error) {
+      console.error('Error fetching Google token:', error.message);
+    } else {
+      console.error('Unknown error fetching Google token:', error);
+    }
     throw new Error('Failed to get Google token.');
   }
 };
@@ -46,11 +52,17 @@ export const getGoogleUserInfo = async (accessToken: string) => {
     });
 
     return response.data; // 사용자 정보 반환
-  } catch (error: any) {
-    console.error(
-      'Error fetching Google user info:',
-      error.response?.data || error.message,
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Error fetching Google user info:',
+        error.response?.data || error.message,
+      );
+    } else if (error instanceof Error) {
+      console.error('Error fetching Google user info:', error.message);
+    } else {
+      console.error('Unknown error fetching Google user info:', error);
+    }
     throw new Error('Failed to get Google user info.');
   }
 };
