@@ -1,119 +1,114 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import Image from '@tiptap/extension-image';
+import ImageResize from 'tiptap-extension-resize-image';
+import Underline from '@tiptap/extension-underline';
+import FontFamily from '@tiptap/extension-font-family';
+import TextStyle from '@tiptap/extension-text-style';
+import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
+import { FontSizeExtension } from '@/extensions/font-size';
+import { LineHeightExtension } from '@/extensions/line-height';
 
-const Editor: React.FC = () => {
-  const editorRef = useRef<HTMLDivElement>(null);
+import { useEditorStore } from '@/store/use-editor-store';
 
-  // 버튼 상태 관리
-  const [activeStyles, setActiveStyles] = useState<{
-    bold: boolean;
-    italic: boolean;
-    underline: boolean;
-  }>({
-    bold: false,
-    italic: false,
-    underline: false,
+export const Editor = () => {
+  const { setEditor } = useEditorStore();
+
+  const editor = useEditor({
+    onCreate({ editor }) {
+      setEditor(editor);
+    },
+    onDestroy() {
+      setEditor(null);
+    },
+    onUpdate({ editor }) {
+      setEditor(editor);
+    },
+    onSelectionUpdate({ editor }) {
+      setEditor(editor);
+    },
+    onTransaction({ editor }) {
+      setEditor(editor);
+    },
+    onFocus({ editor }) {
+      setEditor(editor);
+    },
+    onBlur({ editor }) {
+      setEditor(editor);
+    },
+    onContentError({ editor }) {
+      setEditor(editor);
+    },
+    editorProps: {
+      attributes: {
+        style: 'padding-left: 56px; padding-right: 56px;',
+        class:
+          'focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text',
+      },
+    },
+    extensions: [
+      StarterKit,
+      Color,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: 'https',
+      }),
+      LineHeightExtension.configure({
+        types: ['heading', 'paragraph'],
+        defaultLineHeight: 'normal',
+      }),
+      FontSizeExtension,
+      Highlight.configure({ multicolor: true }),
+      FontFamily,
+      TextStyle,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Image,
+      ImageResize,
+      Underline,
+      Table,
+      TableCell,
+      TableHeader,
+      TableRow,
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
+    ],
+    content: `
+        <table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th colspan="3">Description</th>
+            </tr>
+            <tr>
+              <td>Cyndi Lauper</td>
+              <td>Singer</td>
+              <td>Songwriter</td>
+              <td>Actress</td>
+            </tr>
+          </tbody>
+        </table>`,
   });
-
-  // 선택된 텍스트에 스타일을 적용하는 함수
-  const applyStyle = (style: string) => {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-
-      // 스타일 태그 생성
-      const styledElement = document.createElement('span');
-      if (style === 'bold') styledElement.style.fontWeight = 'bold';
-      if (style === 'italic') styledElement.style.fontStyle = 'italic';
-      if (style === 'underline')
-        styledElement.style.textDecoration = 'underline';
-
-      // 선택된 텍스트를 감싸기
-      styledElement.appendChild(range.extractContents());
-      range.insertNode(styledElement);
-
-      // 선택 영역 초기화
-      selection.removeAllRanges();
-    }
-
-    // 버튼 상태 업데이트
-    updateActiveStyles();
-  };
-
-  // 현재 선택된 텍스트의 스타일 상태 확인
-  const updateActiveStyles = () => {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const parentElement = range.commonAncestorContainer.parentElement;
-
-      if (parentElement) {
-        setActiveStyles({
-          bold:
-            parentElement.style.fontWeight === 'bold' ||
-            window.getComputedStyle(parentElement).fontWeight === '700',
-          italic:
-            parentElement.style.fontStyle === 'italic' ||
-            window.getComputedStyle(parentElement).fontStyle === 'italic',
-          underline:
-            parentElement.style.textDecoration === 'underline' ||
-            window.getComputedStyle(parentElement).textDecoration ===
-              'underline',
-        });
-      }
-    }
-  };
-
   return (
-    <div>
-      {/* 툴바 */}
-      <div style={{ marginBottom: '10px' }}>
-        <button
-          onClick={() => applyStyle('bold')}
-          style={{
-            fontWeight: activeStyles.bold ? 'bold' : 'normal',
-            backgroundColor: activeStyles.bold ? '#e0e0e0' : 'transparent',
-          }}
-        >
-          Bold
-        </button>
-        <button
-          onClick={() => applyStyle('italic')}
-          style={{
-            fontStyle: activeStyles.italic ? 'italic' : 'normal',
-            backgroundColor: activeStyles.italic ? '#e0e0e0' : 'transparent',
-          }}
-        >
-          Italic
-        </button>
-        <button
-          onClick={() => applyStyle('underline')}
-          style={{
-            textDecoration: activeStyles.underline ? 'underline' : 'none',
-            backgroundColor: activeStyles.underline ? '#e0e0e0' : 'transparent',
-          }}
-        >
-          Underline
-        </button>
+    <div className="size-full overflow-x-auto bg-[#F9FbFD] px-4 print:p-0 print:overflow-visible">
+      <div className="min-x-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
+        <EditorContent editor={editor} />
       </div>
-
-      {/* 에디터 영역 */}
-      <div
-        ref={editorRef}
-        contentEditable
-        onMouseUp={updateActiveStyles} // 텍스트 선택 시 활성화 상태 업데이트
-        onKeyUp={updateActiveStyles} // 키보드 조작 시 활성화 상태 업데이트
-        style={{
-          border: '1px solid #ccc',
-          minHeight: '200px',
-          padding: '10px',
-          borderRadius: '4px',
-          outline: 'none',
-        }}
-      ></div>
     </div>
   );
 };
-
-export default Editor;

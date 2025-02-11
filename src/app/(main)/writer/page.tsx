@@ -1,10 +1,11 @@
-import Editor from '@/components/editor/editor';
+import { Editor } from '@/components/editor/editor';
+import { Toolbar } from '@/components/editor/toolbar';
 import React from 'react';
 
 const WriterPage: React.FC = () => {
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Next.js WYSIWYG Editor</h1>
+    <div className="min-h-screen bg-[#FAFBFD]">
+      <Toolbar />
       <Editor />
     </div>
   );
