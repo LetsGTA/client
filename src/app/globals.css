@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Tailwind가 `--font-shrikhand` 변수를 인식할 수 있도록 설정 */
+:root {
+  --font-shrikhand: 'Shrikhand', cursive;
+}
+
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)

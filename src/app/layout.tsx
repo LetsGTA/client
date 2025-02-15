@@ -15,13 +15,19 @@ const pretendard = localFont({
   weight: '45 920',
 });
 
+const shrikhand = localFont({
+  src: '/fonts/Shrikhand-Regular.ttf',
+  variable: '--font-shrikhand',
+  display: 'swap',
+});
+
 const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${pretendard.variable} ${shrikhand.variable}`}>
       {/* 구글 서치 콘솔 */}
       <head>
         <meta

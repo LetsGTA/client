@@ -44,7 +44,10 @@ export default function Home() {
       {/* 헤더 */}
       <header className="bg-card shadow-sm py-4">
         <div className="container mx-auto flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-primary">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-primary font-shrikhand"
+          >
             Let&apos;s GTA
           </Link>
           <div className="flex items-center space-x-4">
@@ -59,7 +62,9 @@ export default function Home() {
                 size={18}
               />
             </div>
-            <Button>로그인</Button>
+            <Link href="/login">
+              <Button>로그인</Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -185,7 +190,9 @@ export default function Home() {
                 <Input type="text" placeholder="아이디" />
                 <Input type="password" placeholder="비밀번호" />
                 <div className="flex space-x-2">
-                  <Button className="flex-grow">로그인</Button>
+                  <Link className="flex-grow" href="/login">
+                    <Button className="w-full">로그인</Button>
+                  </Link>
                   <Button variant="outline" className="flex-grow">
                     회원가입
                   </Button>
